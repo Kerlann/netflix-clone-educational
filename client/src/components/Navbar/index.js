@@ -26,6 +26,17 @@ const Navbar = () => {
     if (searchQuery.trim()) {
       router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
       setSearchActive(false);
+      setSearchQuery('');
+    }
+  };
+
+  // Handle direct navigation to search page
+  const handleSearchClick = () => {
+    if (searchActive && !searchQuery.trim()) {
+      router.push('/search');
+      setSearchActive(false);
+    } else {
+      setSearchActive(!searchActive);
     }
   };
 
@@ -43,12 +54,12 @@ const Navbar = () => {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/series" isActive={router.pathname === '/series'}>
+              <NavLink href="/series" isActive={router.pathname.startsWith('/series')}>
                 Séries
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/films" isActive={router.pathname === '/films'}>
+              <NavLink href="/films" isActive={router.pathname.startsWith('/films')}>
                 Films
               </NavLink>
             </NavItem>
@@ -69,7 +80,8 @@ const Navbar = () => {
             <SearchForm onSubmit={handleSearch}>
               <SearchButton 
                 type="button" 
-                onClick={() => setSearchActive(!searchActive)}
+                onClick={handleSearchClick}
+                aria-label="Rechercher"
               >
                 <FaSearch />
               </SearchButton>
@@ -253,6 +265,7 @@ const ProfileDropdown = styled.div`
   visibility: hidden;
   transition: opacity ${({ theme }) => theme.transitions.default}, 
               visibility ${({ theme }) => theme.transitions.default};
+  z-index: 1000;
 `;
 
 const ProfileMenuItem = styled.div`
