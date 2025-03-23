@@ -1,30 +1,31 @@
 const express = require('express');
-const {
-  getMovies,
-  getMovieById,
-  getTrending,
-  getTopRated,
-  getMoviesByGenre,
-  searchMovies,
-  createMovie,
-  updateMovie,
-  deleteMovie
-} = require('../controllers/movieController');
-const { protect, authorize } = require('../middlewares/auth');
-
 const router = express.Router();
+const { 
+  getMovies, 
+  getMovieById, 
+  searchMovies, 
+  getTrendingMovies, 
+  getTopRatedMovies, 
+  getMoviesByGenre 
+} = require('../controllers/movieController');
+const { protect } = require('../middlewares/authMiddleware');
 
-// Routes publiques
+// Route pour obtenir tous les films
 router.get('/', getMovies);
-router.get('/trending', getTrending);
-router.get('/top-rated', getTopRated);
-router.get('/genre/:genre', getMoviesByGenre);
-router.get('/search', searchMovies);
-router.get('/:id', getMovieById);
 
-// Routes d'administration (protégées et réservées aux admins)
-router.post('/', protect, authorize('admin'), createMovie);
-router.put('/:id', protect, authorize('admin'), updateMovie);
-router.delete('/:id', protect, authorize('admin'), deleteMovie);
+// Route pour obtenir les films tendance
+router.get('/trending', getTrendingMovies);
+
+// Route pour obtenir les films les mieux notés
+router.get('/top-rated', getTopRatedMovies);
+
+// Route pour rechercher des films
+router.get('/search', searchMovies);
+
+// Route pour obtenir les films par genre
+router.get('/genre/:genre', getMoviesByGenre);
+
+// Route pour obtenir un film par ID
+router.get('/:id', getMovieById);
 
 module.exports = router;
