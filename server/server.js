@@ -8,7 +8,7 @@ const errorHandler = require('./middlewares/errorHandler');
 // Chargement des variables d'environnement
 dotenv.config();
 
-// Connexion à la base de données
+// Connexion à la base de données (simule une connexion)
 connectDB();
 
 // Initialisation de l'application Express
@@ -16,7 +16,8 @@ const app = express();
 
 // Middlewares
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000'
+  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  credentials: true
 }));
 app.use(express.json());
 
@@ -33,7 +34,7 @@ app.use('/api/admin', require('./routes/adminRoutes'));
 
 // Route pour tester l'API
 app.get('/', (req, res) => {
-  res.json({ message: 'API Netflox Clone fonctionne correctement' });
+  res.json({ message: 'API Netflix Clone fonctionne correctement' });
 });
 
 // Middleware de gestion des erreurs
