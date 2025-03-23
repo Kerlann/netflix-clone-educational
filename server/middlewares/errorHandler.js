@@ -1,37 +1,43 @@
 /**
- * Middleware pour gérer les erreurs de manière centralisée
+ * Gestionnaire d'erreurs pour l'API
  */
 const errorHandler = (err, req, res, next) => {
-  console.log(err.stack);
+  console.error(err);
 
-  // Copier l'erreur
-  let error = { ...err };
-  error.message = err.message;
-
-  // Erreur Mongoose : ID invalide
-  if (err.name === 'CastError') {
-    const message = `Ressource non trouvée avec l'ID ${err.value}`;
-    error = new Error(message);
-    error.statusCode = 404;
-  }
-
-  // Erreur Mongoose : Enregistrement en double
-  if (err.code === 11000) {
-    const message = 'Valeur dupliquée entrée';
-    error = new Error(message);
-    error.statusCode = 400;
-  }
-
-  // Erreur Mongoose : Validation
+  // Journaliser l'erreur pour le développeur
+  console.error(`${err.name}: ${err.message}`.red);
+  
+  // Erreur de validation Mongoose
   if (err.name === 'ValidationError') {
     const message = Object.values(err.errors).map(val => val.message);
-    error = new Error(message.join(', '));
-    error.statusCode = 400;
+    return res.status(400).json({
+      success: false,
+      error: message
+    });
+  }
+  
+  // Erreur de duplication Mongoose
+  if (err.code === 11000) {
+    const message = 'Dupliquer la valeur d\'un champ unique';
+    return res.status(400).json({
+      success: false,
+      error: message
+    });
+  }
+  
+  // Erreur d'ID invalide
+  if (err.name === 'CastError') {
+    const message = 'Ressource non trouvée';
+    return res.status(404).json({
+      success: false,
+      error: message
+    });
   }
 
-  res.status(error.statusCode || 500).json({
+  // Erreur générique
+  res.status(err.statusCode || 500).json({
     success: false,
-    error: error.message || 'Erreur du serveur'
+    error: err.message || 'Erreur serveur'
   });
 };
 
