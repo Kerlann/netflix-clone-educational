@@ -1,19 +1,21 @@
 const express = require('express');
-const {
-  getMyList,
-  addToMyList,
-  removeFromMyList
-} = require('../controllers/mylistController');
-const { protect } = require('../middlewares/auth');
-
 const router = express.Router();
+const { 
+  getMyList, 
+  addToMyList, 
+  removeFromMyList 
+} = require('../controllers/mylistController');
+const { protect } = require('../middlewares/authMiddleware');
 
-// Toutes les routes nécessitent une authentification
+// Protection de toutes les routes
 router.use(protect);
 
-// Routes pour la gestion des listes personnelles
-router.get('/', getMyList);
-router.post('/', addToMyList);
-router.delete('/:id', removeFromMyList);
+// Route pour obtenir tous les éléments de ma liste
+router.route('/')
+  .get(getMyList)
+  .post(addToMyList);
+
+// Route pour supprimer un élément de ma liste
+router.delete('/:movieId', removeFromMyList);
 
 module.exports = router;
