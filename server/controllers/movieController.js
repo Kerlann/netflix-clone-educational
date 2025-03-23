@@ -9,11 +9,7 @@ exports.getMovies = async (req, res, next) => {
   try {
     const movies = await Movie.find();
     
-    res.status(200).json({
-      success: true,
-      count: movies.length,
-      data: movies
-    });
+    res.status(200).json(movies);
   } catch (err) {
     next(err);
   }
@@ -35,10 +31,7 @@ exports.getMovieById = async (req, res, next) => {
       });
     }
     
-    res.status(200).json({
-      success: true,
-      data: movie
-    });
+    res.status(200).json(movie);
   } catch (err) {
     next(err);
   }
@@ -49,15 +42,11 @@ exports.getMovieById = async (req, res, next) => {
  * @route   GET /api/movies/trending
  * @access  Public
  */
-exports.getTrending = async (req, res, next) => {
+exports.getTrendingMovies = async (req, res, next) => {
   try {
     const movies = await Movie.find({ isTrending: true });
     
-    res.status(200).json({
-      success: true,
-      count: movies.length,
-      data: movies
-    });
+    res.status(200).json(movies);
   } catch (err) {
     next(err);
   }
@@ -68,15 +57,11 @@ exports.getTrending = async (req, res, next) => {
  * @route   GET /api/movies/top-rated
  * @access  Public
  */
-exports.getTopRated = async (req, res, next) => {
+exports.getTopRatedMovies = async (req, res, next) => {
   try {
     const movies = await Movie.find({ isTopRated: true });
     
-    res.status(200).json({
-      success: true,
-      count: movies.length,
-      data: movies
-    });
+    res.status(200).json(movies);
   } catch (err) {
     next(err);
   }
@@ -108,11 +93,7 @@ exports.getMoviesByGenre = async (req, res, next) => {
     
     const movies = await Movie.find({ genres: genre });
     
-    res.status(200).json({
-      success: true,
-      count: movies.length,
-      data: movies
-    });
+    res.status(200).json(movies);
   } catch (err) {
     next(err);
   }
@@ -142,11 +123,7 @@ exports.searchMovies = async (req, res, next) => {
       ]
     });
     
-    res.status(200).json({
-      success: true,
-      count: movies.length,
-      data: movies
-    });
+    res.status(200).json(movies);
   } catch (err) {
     next(err);
   }
@@ -161,10 +138,7 @@ exports.createMovie = async (req, res, next) => {
   try {
     const movie = await Movie.create(req.body);
     
-    res.status(201).json({
-      success: true,
-      data: movie
-    });
+    res.status(201).json(movie);
   } catch (err) {
     next(err);
   }
@@ -191,10 +165,7 @@ exports.updateMovie = async (req, res, next) => {
       runValidators: true
     });
     
-    res.status(200).json({
-      success: true,
-      data: movie
-    });
+    res.status(200).json(movie);
   } catch (err) {
     next(err);
   }
@@ -216,12 +187,9 @@ exports.deleteMovie = async (req, res, next) => {
       });
     }
     
-    await movie.deleteOne();
+    await Movie.findByIdAndDelete(req.params.id);
     
-    res.status(200).json({
-      success: true,
-      data: {}
-    });
+    res.status(200).json({ success: true });
   } catch (err) {
     next(err);
   }
