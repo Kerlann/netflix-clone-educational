@@ -41,7 +41,7 @@ const Navbar = () => {
   };
 
   return (
-    <NavbarContainer isScrolled={isScrolled}>
+    <NavbarContainer $isScrolled={isScrolled}>
       <NavContent>
         <LeftSection>
           <Logo href="/">
@@ -49,34 +49,34 @@ const Navbar = () => {
           </Logo>
           <NavMenu>
             <NavItem>
-              <NavLink href="/" isActive={router.pathname === '/'}>
+              <NavLink href="/" $isActive={router.pathname === '/'}>
                 Accueil
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/series" isActive={router.pathname.startsWith('/series')}>
+              <NavLink href="/series" $isActive={router.pathname.startsWith('/series')}>
                 Séries
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/films" isActive={router.pathname.startsWith('/films')}>
+              <NavLink href="/films" $isActive={router.pathname.startsWith('/films')}>
                 Films
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/new" isActive={router.pathname === '/new'}>
+              <NavLink href="/new" $isActive={router.pathname === '/new'}>
                 Nouveautés
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink href="/my-list" isActive={router.pathname === '/my-list'}>
+              <NavLink href="/my-list" $isActive={router.pathname === '/my-list'}>
                 Ma liste
               </NavLink>
             </NavItem>
           </NavMenu>
         </LeftSection>
         <RightSection>
-          <SearchContainer active={searchActive}>
+          <SearchContainer $active={searchActive}>
             <SearchForm onSubmit={handleSearch}>
               <SearchButton 
                 type="button" 
@@ -124,8 +124,8 @@ const NavbarContainer = styled.nav`
   display: flex;
   align-items: center;
   padding: 0 ${({ theme }) => theme.spacing.lg};
-  background: ${({ isScrolled, theme }) => 
-    isScrolled 
+  background: ${({ $isScrolled, theme }) => 
+    $isScrolled 
       ? theme.colors.dark 
       : 'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)'
   };
@@ -174,10 +174,10 @@ const NavItem = styled.li`
 `;
 
 const NavLink = styled(Link)`
-  color: ${({ isActive, theme }) => isActive ? theme.colors.light : theme.colors.lightGrey};
+  color: ${({ $isActive, theme }) => $isActive ? theme.colors.light : theme.colors.lightGrey};
   text-decoration: none;
   font-size: 14px;
-  font-weight: ${({ isActive }) => isActive ? 'bold' : 'normal'};
+  font-weight: ${({ $isActive }) => $isActive ? 'bold' : 'normal'};
   transition: color ${({ theme }) => theme.transitions.fast};
   
   &:hover {
@@ -193,7 +193,7 @@ const RightSection = styled.div`
 const SearchContainer = styled.div`
   position: relative;
   margin-right: ${({ theme }) => theme.spacing.md};
-  width: ${({ active }) => active ? '240px' : 'auto'};
+  width: ${({ $active }) => $active ? '240px' : 'auto'};
   transition: width ${({ theme }) => theme.transitions.default};
 `;
 
