@@ -1,17 +1,15 @@
-import axios from 'axios';
-
-const API_URL = process.env.REACT_APP_API_URL || '/api';
-const MOVIES_API = `${API_URL}/movies`;
+import apiClient from './apiService';
 
 /**
  * Récupère les films tendance
  */
 export const getTrending = async () => {
   try {
-    const response = await axios.get(`${MOVIES_API}/trending`);
+    const response = await apiClient.get('/movies/trending');
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    console.error('Erreur lors de la récupération des films tendance:', error);
+    return [];
   }
 };
 
@@ -20,10 +18,11 @@ export const getTrending = async () => {
  */
 export const getTopRated = async () => {
   try {
-    const response = await axios.get(`${MOVIES_API}/top-rated`);
+    const response = await apiClient.get('/movies/top-rated');
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    console.error('Erreur lors de la récupération des films les mieux notés:', error);
+    return [];
   }
 };
 
@@ -33,10 +32,11 @@ export const getTopRated = async () => {
  */
 export const getMovies = async (genre) => {
   try {
-    const response = await axios.get(`${MOVIES_API}/genre/${genre}`);
+    const response = await apiClient.get(`/movies/genre/${genre}`);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    console.error(`Erreur lors de la récupération des films du genre ${genre}:`, error);
+    return [];
   }
 };
 
@@ -46,10 +46,11 @@ export const getMovies = async (genre) => {
  */
 export const getMovieDetails = async (id) => {
   try {
-    const response = await axios.get(`${MOVIES_API}/${id}`);
+    const response = await apiClient.get(`/movies/${id}`);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    console.error(`Erreur lors de la récupération des détails du film ${id}:`, error);
+    throw error;
   }
 };
 
@@ -59,10 +60,11 @@ export const getMovieDetails = async (id) => {
  */
 export const searchMovies = async (query) => {
   try {
-    const response = await axios.get(`${MOVIES_API}/search?q=${query}`);
+    const response = await apiClient.get(`/movies/search?q=${query}`);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    console.error('Erreur lors de la recherche de films:', error);
+    return [];
   }
 };
 
@@ -72,10 +74,11 @@ export const searchMovies = async (query) => {
  */
 export const addToMyList = async (movieId) => {
   try {
-    const response = await axios.post(`${API_URL}/mylist`, { movieId });
+    const response = await apiClient.post('/mylist', { movieId });
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    console.error('Erreur lors de l\'ajout du film à la liste:', error);
+    throw error;
   }
 };
 
@@ -85,10 +88,11 @@ export const addToMyList = async (movieId) => {
  */
 export const removeFromMyList = async (movieId) => {
   try {
-    const response = await axios.delete(`${API_URL}/mylist/${movieId}`);
+    const response = await apiClient.delete(`/mylist/${movieId}`);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    console.error('Erreur lors de la suppression du film de la liste:', error);
+    throw error;
   }
 };
 
@@ -97,9 +101,10 @@ export const removeFromMyList = async (movieId) => {
  */
 export const getMyList = async () => {
   try {
-    const response = await axios.get(`${API_URL}/mylist`);
+    const response = await apiClient.get('/mylist');
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    console.error('Erreur lors de la récupération de la liste personnelle:', error);
+    return [];
   }
 };
