@@ -1,16 +1,11 @@
-const mongoose = require('mongoose');
-
 /**
- * Connexion à la base de données MongoDB
+ * Fonction mock pour la connexion à la base de données
+ * Comme nous n'utilisons pas de base de données, cette fonction
+ * ne fait rien mais évite les erreurs de connexion
  */
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-
-    console.log(`MongoDB connecté: ${conn.connection.host}`);
+    console.log('Mode sans base de données activé');
   } catch (error) {
     console.error(`Erreur: ${error.message}`);
     process.exit(1);
